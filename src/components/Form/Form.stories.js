@@ -14,6 +14,7 @@ import SelectItem from '../SelectItem';
 import TextArea from '../TextArea';
 import TextInput from '../TextInput';
 import Toggle from '../Toggle';
+import settings from '../../globals/js/settings';
 
 import markdown from './README.mdx';
 
@@ -253,6 +254,16 @@ DetailedForm.args = {
   children: 'Form',
   className: 'some-class',
   longForm: true,
+};
+
+DetailedForm.test = async (browser, {component}) => {
+  const {ok} = require('assert');
+
+  await browser.uploadFile('input[type="file"]', require.resolve('./README.mdx'));
+
+  const fileElementContainer = await browser.findElement(`.${settings.prefix}--file-container`);
+
+  ok(await browser.hasDescendants(fileElementContainer));
 };
 
 const detailedforsourcecode = `
