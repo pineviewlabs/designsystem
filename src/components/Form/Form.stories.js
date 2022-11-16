@@ -14,6 +14,7 @@ import SelectItem from '../SelectItem';
 import TextArea from '../TextArea';
 import TextInput from '../TextInput';
 import Toggle from '../Toggle';
+import Settings from '../../globals/js/settings';
 
 import markdown from './README.mdx';
 
@@ -396,6 +397,16 @@ DetailedForm.story = {
     },
   },
 };
+
+DetailedForm.test = async (browser, {component}) => {
+  await browser.uploadFile('input[type="file"]', require.resolve('./README.mdx'));
+
+  const fileElementContainer = await component.findElement(`.${Settings.prefix}--file-container`);
+  const hasDroppedFile = await browser.hasDescendants(fileElementContainer);
+
+  await browser.assert.strictEqual(hasDroppedFile, true, 'The file dropzone element has been populated.');
+};
+
 
 export const Login = (args) => {
   return (
